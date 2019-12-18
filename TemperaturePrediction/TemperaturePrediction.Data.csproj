@@ -47,15 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\DataFiller.cs" />
     <Compile Include="Helper\GeoTiff.cs" />
+    <Compile Include="Helper\MetadataTags.cs" />
+    <Compile Include="Model\Area.cs" />
+    <Compile Include="Model\ChanelValue.cs" />
+    <Compile Include="Model\MapPoint.cs" />
+    <Compile Include="Model\Point.cs" />
+    <Compile Include="Model\Scene.cs" />
+    <Compile Include="Model\UnitPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TemperaturePrediction.Model\TemperaturePrediction.Model.csproj">
-      <Project>{5FF4448B-4DDD-41FB-A396-846A72906FC9}</Project>
-      <Name>TemperaturePrediction.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

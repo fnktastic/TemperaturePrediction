@@ -1,6 +1,8 @@
+using AutoMapper;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using TemperaturePrediction.UI.Helper;
 using TemperaturePrediction.UI.Service;
 
 namespace TemperaturePrediction.UI.ViewModel
@@ -14,6 +16,12 @@ namespace TemperaturePrediction.UI.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
 
             SimpleIoc.Default.Register<IWeatherService, WeatherService>();
+
+            SimpleIoc.Default.Register<IDataService, DataService>();
+
+            SimpleIoc.Default.Register<IConfigurationProvider, MyConfig>();
+
+            SimpleIoc.Default.Register<IMapper, MyMapper>();
         }
 
         public MainViewModel Main
