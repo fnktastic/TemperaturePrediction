@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperaturePrediction.UI", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperaturePrediction.ConsoleClient", "TemperaturePrediction.ConsoleClient\TemperaturePrediction.ConsoleClient.csproj", "{20A31FE9-9F70-4322-B5E6-6C9BA79D58E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperaturePrediction.WeatherClient", "TemperaturePrediction.WeatherClient\TemperaturePrediction.WeatherClient.csproj", "{A8F977C8-4E2E-4856-8CF4-C63F5C007C9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldWeatherOnline", "TemperaturePrediction.WorldWeatherOnline\WorldWeatherOnline.csproj", "{3836219B-2912-4957-9361-E68AC325604E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{20A31FE9-9F70-4322-B5E6-6C9BA79D58E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20A31FE9-9F70-4322-B5E6-6C9BA79D58E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20A31FE9-9F70-4322-B5E6-6C9BA79D58E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8F977C8-4E2E-4856-8CF4-C63F5C007C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8F977C8-4E2E-4856-8CF4-C63F5C007C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8F977C8-4E2E-4856-8CF4-C63F5C007C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8F977C8-4E2E-4856-8CF4-C63F5C007C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3836219B-2912-4957-9361-E68AC325604E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3836219B-2912-4957-9361-E68AC325604E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3836219B-2912-4957-9361-E68AC325604E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3836219B-2912-4957-9361-E68AC325604E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

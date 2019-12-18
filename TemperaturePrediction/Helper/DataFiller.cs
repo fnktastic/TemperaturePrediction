@@ -25,6 +25,8 @@ namespace TemperaturePrediction.Data.Helper
 
         private const string scenesOutputPath = @"C:\Users\fnkta\Documents\Диплом 2019\Scenes\Output";
 
+        private int X1 = 5000, Y1 = 5000, OFFSET = 100;
+
         private GeoTIFF Band10Tiff;
         private GeoTIFF Band4Tiff;
         private GeoTIFF Band5Tiff;
@@ -77,11 +79,11 @@ namespace TemperaturePrediction.Data.Helper
 
                 if (band10 != null && band4 != null && band5 != null && metadata != null)
                 {
-                    Band10Tiff = new GeoTIFF(band10);
+                    Band10Tiff = new GeoTIFF(band10, X1, Y1, OFFSET);
 
-                    Band4Tiff = new GeoTIFF(band4);
+                    Band4Tiff = new GeoTIFF(band4, X1, Y1, OFFSET);
 
-                    Band5Tiff = new GeoTIFF(band5);
+                    Band5Tiff = new GeoTIFF(band5, X1, Y1, OFFSET);
 
                     float Ml = GetMetadataValue(metadata, MetadataTags.RADIANCE_MULT_BAND_10);
 
@@ -91,8 +93,8 @@ namespace TemperaturePrediction.Data.Helper
 
                     float K2 = GetMetadataValue(metadata, MetadataTags.K2_CONSTANT_BAND_10);
 
-                    int ndviHeight = Band4Tiff.NHeight;
-                    int ndviWidth = Band4Tiff.NWidth;
+                    int ndviHeight = OFFSET;
+                    int ndviWidth = OFFSET;
 
                     BT = new double[ndviHeight, ndviWidth];
 

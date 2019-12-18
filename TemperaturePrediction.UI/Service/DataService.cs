@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemperaturePrediction.WeatherClient
+namespace TemperaturePrediction.UI.Service
 {
-    public class Class1
+    class DataService
     {
     }
 }

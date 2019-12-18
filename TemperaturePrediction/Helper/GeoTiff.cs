@@ -10,31 +10,11 @@ namespace TemperaturePrediction.Data.Helper
 {
     public class GeoTIFF
     {
-        private int X1, Y1, X2, Y2;
+        public float[,] HeightMap { get; private set; }
+        public int NWidth { get; private set; }
+        public int NHeight { get; private set; }
 
-
-        private float[,] heightMap;
-        public float[,] HeightMap
-        {
-            get { return heightMap; }
-            private set { heightMap = value; }
-        }
-
-        private int nWidth;
-        public int NWidth
-        {
-            get { return nWidth; }
-            private set { nWidth = value; }
-        }
-
-        private int nHeight;
-        public int NHeight
-        {
-            get { return nHeight; }
-            private set { nHeight = value; }
-        }
-
-        public GeoTIFF(string fn)
+        public GeoTIFF(string fn, int X1 = 5000, int Y1 = 5000, int OFFSET = 100)
         {
             using (Tiff tiff = Tiff.Open(fn, "r"))
             {
@@ -50,36 +30,33 @@ namespace TemperaturePrediction.Data.Helper
                 double originLon = BitConverter.ToDouble(modelTransformation, 24);
                 double originLat = BitConverter.ToDouble(modelTransformation, 32);
 
-                double startLat = originLat + (pixelSizeY / 2.0);
                 double startLon = originLon + (pixelSizeX / 2.0);
-
+                double startLat = originLat + (pixelSizeY / 2.0);
+                
                 var scanline = new byte[tiff.ScanlineSize()];
 
                 //TODO: Check if band is stored in 1 byte or 2 bytes. 
                 //If 2, the following code would be required
-                var scanline16Bit = new ushort[tiff.ScanlineSize() / 2];
+                var scanline16Bit = new ushort[OFFSET];
                 //Buffer.BlockCopy(scanline, 0, scanline16Bit, 0, scanline.Length);
 
-                nHeight = height;
-                nWidth = scanline16Bit.Length;
-                heightMap = new float[nHeight, nWidth];
+                NHeight = height;
+                NWidth = scanline16Bit.Length;
+                HeightMap = new float[OFFSET, OFFSET];
 
                 double currentLat = startLat;
                 double currentLon = startLon;
 
-                for (int i = 0; i < height; i++)
+                for (int i = X1, p = 0; i < X1 + OFFSET; i++, p++)
                 {
                     tiff.ReadScanline(scanline, i); //Loading ith Line            
-                    Buffer.BlockCopy(scanline, 0, scanline16Bit, 0, scanline.Length);
+                    Buffer.BlockCopy(scanline, Y1, scanline16Bit, 0, OFFSET * 2);
 
                     var latitude = currentLat + (pixelSizeY * i);
-                    for (var j = 0; j < scanline16Bit.Length; j++)
+                    for (int j = Y1, q = 0; q < scanline16Bit.Length; j++, q++)
                     {
                         var longitude = currentLon + (pixelSizeX * j);
-                        //geodata.Points[0] = new[] { new PointXY(longitude, latitude) };
-                        //byte value = scanline[j];
-
-                        heightMap[i, j] = scanline16Bit[j];
+                        HeightMap[p, q] = scanline16Bit[q];
                     }
                 }
             }
