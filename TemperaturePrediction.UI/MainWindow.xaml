@@ -1,9 +1,10 @@
-﻿<Window x:Class="TemperaturePrediction.UI.MainWindow"
+﻿<Controls:MetroWindow x:Class="TemperaturePrediction.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TemperaturePrediction.UI"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:views="clr-namespace:TemperaturePrediction.UI.View"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
@@ -13,4 +14,4 @@
             <views:FetchMapUserControl Padding="10" />
         </TabItem>
     </TabControl>
-</Window>
+</Controls:MetroWindow>
