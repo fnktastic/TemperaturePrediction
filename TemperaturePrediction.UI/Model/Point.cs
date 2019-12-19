@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemperaturePrediction.Model
+namespace TemperaturePrediction.UI.Model
 {
     public abstract class Point // base pont
     {

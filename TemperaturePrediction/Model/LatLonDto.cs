@@ -1,16 +1,23 @@
 ﻿using System.Globalization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TemperaturePrediction.Model
 {
-    public struct LatLon
+    public class LatLonDto
     {
         public double Lon { get; set; }
         public double Lat { get; set; }
 
-        public LatLon(double lat, double lon)
+        public LatLonDto(double lat, double lon)
         {
             Lon = lon;
             Lat = lat;
+        }
+
+        public LatLonDto()
+        {
+
         }
 
         public override string ToString()

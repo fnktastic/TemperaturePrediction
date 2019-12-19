@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TemperaturePrediction.Model;
@@ -8,7 +9,7 @@ namespace TemperaturePrediction.UI.Service
 {
     public interface IDataService
     {
-        Task<List<Scene>> GetScenesAsync(string scenesPath, List<Point> points);
+        Task<List<SceneDto>> GetScenesAsync(string scenesPath, List<Point> points);
     }
 
     public class DataService : IDataService
@@ -23,7 +24,7 @@ namespace TemperaturePrediction.UI.Service
             _mapper = mapper;
         }
 
-        public async Task<List<Scene>> GetScenesAsync(string scenesPath, List<Point> points)
+        public async Task<List<SceneDto>> GetScenesAsync(string scenesPath, List<Point> points)
         {
             var scenes = ProcessScenes(scenesPath, points);
 
@@ -37,10 +38,10 @@ namespace TemperaturePrediction.UI.Service
                 }
             }
 
-            return scenes;
+            return scenes.OrderBy(x => x.TimeStamp).ToList();
         }
 
-        private List<Scene> ProcessScenes(string scenesPath, List<Point> points)
+        private List<SceneDto> ProcessScenes(string scenesPath, List<Point> points)
         {
             var dataFiller = new SceneProcessor(scenesPath, points);
 

@@ -8,47 +8,58 @@
              xmlns:controls="clr-namespace:TemperaturePrediction.UI.Control"
              xmlns:mapModule="clr-namespace:MapDemo;assembly=MapDemo"
              xmlns:converter="clr-namespace:TrendAudioFromSpotify.UI.Converter"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d">
     <UserControl.Resources>
         <converter:BoolToVisibleOrCollapsed x:Key="BoolToVisibleOrCollapsed" />
         <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="275" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="500" />
+            <RowDefinition Height="550" />
             <RowDefinition Height="250" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="0" Margin="10 0" HorizontalAlignment="Left">
+        <StackPanel Grid.Column="0" Grid.Row="0" Margin="10 0" HorizontalAlignment="Stretch">
             <GroupBox Header="Settings" Background="Black" Grid.Row="0" Grid.Column="0" >
                 <StackPanel HorizontalAlignment="Center">
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <TextBlock Width="70" Text="longitude: " />
-                        <TextBox Width="100" Text="45.54593" />
+                        <TextBox Width="100" Text="{Binding Lon}" />
                     </StackPanel>
                     <StackPanel Margin="0 5" HorizontalAlignment="Center" Orientation="Horizontal">
                         <TextBlock Width="70" Text="lattitude: " />
-                        <TextBox Width="100" Text="-97.32156" />
+                        <TextBox Width="100" Text="{Binding Lat}" />
                     </StackPanel>
                     <StackPanel Margin="0 5" HorizontalAlignment="Center" Orientation="Horizontal">
                         <StackPanel>
                             <Label HorizontalAlignment="Center" Content="Start date:" />
-                            <DatePicker Text="Start date" />
+                            <DatePicker Text="{Binding StartDate}" />
                         </StackPanel>
                         <StackPanel>
                             <Label HorizontalAlignment="Center" Content="End date:" />
-                            <DatePicker Text="Start date" />
+                            <DatePicker Text="{Binding EndDate}" />
                         </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0 5" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Width="100" Text="Cloudity min: " />
+                        <TextBox Width="100" Text="{Binding MinCloudity}" />
+                    </StackPanel>
+                    <StackPanel Margin="0 5" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Width="100" Text="Cloudity max: " />
+                        <TextBox Width="100" Text="{Binding MaxCloudity}" />
+                    </StackPanel>
+                    <StackPanel Margin="0 5" HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Width="100" Text="Interval (day): " />
+                        <TextBox Width="100" Text="{Binding Interval}" />
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
             <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 15 0 0" HorizontalAlignment="Center">
                 <Button Command="{Binding FetchDataCommand}" HorizontalAlignment="Center" Content="Get available scenes" Width="150" Height="25" />
-                <Controls:ProgressRing  Margin="15 0 0 0"
+                <Controls:ProgressRing  Margin="0 15 0 0"
                                             Grid.RowSpan="2"
                                             Visibility="{Binding IsDataFetching, Converter={StaticResource BoolToVisibleOrCollapsed}}" />
             </StackPanel>
@@ -57,7 +68,8 @@
             <mapModule:MapEditor />
         </Grid>
         <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-            ItemsSource="{Binding Scenes}">
+                 SelectedItem="{Binding SelectedScene}"
+                 ItemsSource="{Binding Scenes}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <controls:SceneControl />

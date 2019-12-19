@@ -31,9 +31,9 @@ namespace TemperaturePrediction.UI.Service
             _scenes = Directory.GetDirectories(_scenesPath).ToList();
         }
 
-        public List<Scene> ProcessMap()
+        public List<SceneDto> ProcessMap()
         {
-            var mapScenes = new List<Scene>();
+            var mapScenes = new List<SceneDto>();
 
             foreach (var scenePath in _scenes)
             {
@@ -45,13 +45,14 @@ namespace TemperaturePrediction.UI.Service
             return mapScenes;
         }
 
-        private Scene BuildScene(string scenePath)
+        private SceneDto BuildScene(string scenePath)
         {
-            var scene = new Scene();
+            var scene = new SceneDto();
 
             scene.Id = GetMetadataStringValue(scenePath, "LANDSAT_SCENE_ID"); 
             scene.Name = GetMetadataStringValue(scenePath, "LANDSAT_PRODUCT_ID");
             scene.Path = scenePath;
+            scene.Metadata = Directory.GetFiles(scenePath).FirstOrDefault(x => Path.GetFileNameWithoutExtension(x).EndsWith("MTL"));
             scene.Cloudity = GetMetadataStringValue(scenePath, "CLOUD_COVER");
             scene.TimeStamp = DateTime.Parse(GetMetadataStringValue(scenePath, "DATE_ACQUIRED"));
             scene.Image = Path.Combine(scenePath, "preview.jpg");
@@ -94,12 +95,12 @@ namespace TemperaturePrediction.UI.Service
             return string.Empty;
         }
 
-        private Area BuildArea(string scene, int areaNumber, int X1, int Y1, int OFFSET)
+        private AreaDto BuildArea(string scene, int areaNumber, int X1, int Y1, int OFFSET)
         {
-            LatLon lonLat = new LatLon();
+            LatLonDto lonLat = new LatLonDto();
 
-            var mapPoints = new List<MapPoint>();
-            var unitPoints = new List<UnitPoint>();
+            var mapPoints = new List<MapPointDto>();
+            var unitPoints = new List<UnitPointDto>();
 
             string sceneName = Path.GetDirectoryName(scene);
 
@@ -184,7 +185,7 @@ namespace TemperaturePrediction.UI.Service
                                 Console.WriteLine(val);
                                 LST[i, j] = val;
 
-                                unitPoints.Add(new UnitPoint()
+                                unitPoints.Add(new UnitPointDto()
                                 {
                                     X = X1 + i,
                                     Y = Y1 + j,
@@ -193,15 +194,15 @@ namespace TemperaturePrediction.UI.Service
                                     StationTemperature = null,
                                 });
 
-                                mapPoints.Add(new MapPoint()
+                                mapPoints.Add(new MapPointDto()
                                 {
                                     X = X1 + i,
                                     Y = Y1 + j,
-                                    ChanelValues = new List<ChanelValue>()
+                                    ChanelValues = new List<ChanelValueDto>()
                                     {
-                                        new ChanelValue(10, Band10Tiff.HeightMap[i,j]),
-                                        new ChanelValue(5, Band5Tiff.HeightMap[i,j]),
-                                        new ChanelValue(4, Band4Tiff.HeightMap[i,j]),
+                                        new ChanelValueDto(10, Band10Tiff.HeightMap[i,j]),
+                                        new ChanelValueDto(5, Band5Tiff.HeightMap[i,j]),
+                                        new ChanelValueDto(4, Band4Tiff.HeightMap[i,j]),
                                     }
                                 });
                             }
@@ -209,7 +210,7 @@ namespace TemperaturePrediction.UI.Service
                     }
             }
 
-            return new Area()
+            return new AreaDto()
             {
                 MapPoints = mapPoints,
                 UnitPoints = unitPoints,

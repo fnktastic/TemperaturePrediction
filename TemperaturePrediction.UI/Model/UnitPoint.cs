@@ -1,4 +1,4 @@
-﻿namespace TemperaturePrediction.Model
+﻿namespace TemperaturePrediction.UI.Model
 {
     public class UnitPoint : Point // unit point for prediction
     {

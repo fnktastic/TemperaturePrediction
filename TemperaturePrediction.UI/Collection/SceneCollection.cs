@@ -15,5 +15,10 @@ namespace TemperaturePrediction.UI.Collection
         {
 
         }
+
+        public SceneCollection()
+        {
+
+        }
     }
 }

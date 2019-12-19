@@ -16,15 +16,15 @@ namespace TemperaturePrediction.Data.Helper
         public int NWidth { get; private set; }
         public int NHeight { get; private set; }
 
-        private static LatLon GetLatLon(double x, double y, int zone)
+        private static LatLonDto GetLatLon(double x, double y, int zone)
         {
             UniversalTransverseMercator utm = new UniversalTransverseMercator("Q", zone, x, y);
             Coordinate c = UniversalTransverseMercator.ConvertUTMtoLatLong(utm);
 
-            return new LatLon(c.Latitude.DecimalDegree, c.Longitude.DecimalDegree);
+            return new LatLonDto(c.Latitude.DecimalDegree, c.Longitude.DecimalDegree);
         }
 
-        public static LatLon LonLat(string fn, int zone, int X1, int Y1, int OFFSET)
+        public static LatLonDto LonLat(string fn, int zone, int X1, int Y1, int OFFSET)
         {
             using (Tiff tiff = Tiff.Open(fn, "r"))
             {

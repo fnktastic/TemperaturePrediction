@@ -22,7 +22,7 @@
             <views:DataViewerControl />
         </TabItem>
         <TabItem Header="Analyzing">
-            <views:DataViewerControl />
+            <views:AnalyzingSceneControl />
         </TabItem>
         <TabItem Header="Prediction">
             <views:DataViewerControl />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TemperaturePrediction.Model
+namespace TemperaturePrediction.UI.Model
 {
     public class MapPoint : Point // point for map
     {

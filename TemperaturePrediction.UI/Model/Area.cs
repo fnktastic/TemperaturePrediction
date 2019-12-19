@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TemperaturePrediction.Model
+namespace TemperaturePrediction.UI.Model
 {
     public class Area // area of the scene
     {

@@ -2,6 +2,8 @@ using AutoMapper;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using TemperaturePrediction.DataAccess;
+using TemperaturePrediction.Repository;
 using TemperaturePrediction.UI.Helper;
 using TemperaturePrediction.UI.Service;
 
@@ -22,6 +24,12 @@ namespace TemperaturePrediction.UI.ViewModel
             SimpleIoc.Default.Register<IConfigurationProvider, MyConfig>();
 
             SimpleIoc.Default.Register<IMapper, MyMapper>();
+
+            SimpleIoc.Default.Register<Context>();
+
+            SimpleIoc.Default.Register<ISceneRepository, SceneRepository>();
+
+            SimpleIoc.Default.Register<IDbService, DbService>();
         }
 
         public MainViewModel Main

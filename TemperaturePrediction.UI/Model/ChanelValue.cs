@@ -1,4 +1,4 @@
-﻿namespace TemperaturePrediction.Model
+﻿namespace TemperaturePrediction.UI.Model
 {
     public struct ChanelValue // value of the map channel
     {

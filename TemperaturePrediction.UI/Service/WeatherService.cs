@@ -7,7 +7,7 @@ namespace TemperaturePrediction.UI.Service
 {
     public interface IWeatherService
     {
-        Task<Meteo> GetPastWeatherForLocationAsync(string location, DateTime startDate);
+        Task<MeteoDto> GetPastWeatherForLocationAsync(string location, DateTime startDate);
     }
 
     public class WeatherService : IWeatherService
@@ -20,7 +20,7 @@ namespace TemperaturePrediction.UI.Service
             _api = _api ?? new Api(API_KEY);
         }
 
-        public async Task<Meteo> GetPastWeatherForLocationAsync(string location, DateTime startDate)
+        public async Task<MeteoDto> GetPastWeatherForLocationAsync(string location, DateTime startDate)
         {
             var res = await _api.BuildPastWeatherQuery(location, startDate)
                 .WithEnddate(startDate)
@@ -29,7 +29,7 @@ namespace TemperaturePrediction.UI.Service
 
             var weather = res.data.weather[0];
 
-            return new Meteo(weather.mintempC, weather.maxtempC);
+            return new MeteoDto(weather.mintempC, weather.maxtempC);
         }
     }
 }
