@@ -1,4 +1,5 @@
 using AutoMapper;
+using CoordinateSharp;
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
@@ -35,18 +36,28 @@ namespace TemperaturePrediction.UI.ViewModel
             FetchData();
         }
 
-        private void FetchData()
+        private async void FetchData()
         {
             string path = @"C:\Users\fnkta\Documents\Scenes";
 
             var points = new List<Point>()
             {
-                new Point(3000, 3000, 50),
-                new Point(2000, 4000, 50),
-                new Point(4000, 2000, 50),
+                new Point(3000, 3000, 2),
+                new Point(2000, 4000, 2),
+                new Point(4000, 2000, 2),
             };
 
             var scenes = _dataService.GetScenes(path, points);
+
+            foreach (var scene in scenes)
+            {
+                foreach (var area in scene.Areas)
+                {
+                    var meteo = await _weatherService.GetPastWeatherForLocationAsync(area.LonLat.ToString(), scene.TimeStamp);
+
+                    area.Meteo = meteo;
+                }
+            }
 
             Scenes = new SceneCollection(_mapper.Map<List<Model.Scene>>(scenes));
         }

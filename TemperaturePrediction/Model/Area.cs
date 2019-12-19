@@ -7,5 +7,7 @@ namespace TemperaturePrediction.Model
         public int Number { get; set; }
         public List<MapPoint> MapPoints { get; set; }
         public List<UnitPoint> UnitPoints { get; set; }
+        public LatLon LonLat { get; set; }
+        public Meteo Meteo { get; set; }
     }
 }

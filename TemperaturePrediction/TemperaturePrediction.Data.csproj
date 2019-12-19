@@ -37,6 +37,9 @@
     <Reference Include="BitMiracle.LibTiff.NET, Version=2.4.633.0, Culture=neutral, PublicKeyToken=53879b3e20e7a7d6, processorArchitecture=MSIL">
       <HintPath>..\packages\BitMiracle.LibTiff.NET.2.4.633\lib\net40\BitMiracle.LibTiff.NET.dll</HintPath>
     </Reference>
+    <Reference Include="CoordinateSharp, Version=2.3.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CoordinateSharp.2.3.1.1\lib\net40\CoordinateSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,7 +54,9 @@
     <Compile Include="Helper\MetadataTags.cs" />
     <Compile Include="Model\Area.cs" />
     <Compile Include="Model\ChanelValue.cs" />
+    <Compile Include="Model\LatLon.cs" />
     <Compile Include="Model\MapPoint.cs" />
+    <Compile Include="Model\Meteo.cs" />
     <Compile Include="Model\Point.cs" />
     <Compile Include="Model\Scene.cs" />
     <Compile Include="Model\UnitPoint.cs" />

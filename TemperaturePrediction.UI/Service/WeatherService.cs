@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using TemperaturePrediction.Model;
 using WorldWeatherOnline;
 
 namespace TemperaturePrediction.UI.Service
 {
     public interface IWeatherService
     {
-        Task GetPastWeatherForLocationAsync(string location, DateTime startDate);
+        Task<Meteo> GetPastWeatherForLocationAsync(string location, DateTime startDate);
     }
 
     public class WeatherService : IWeatherService
@@ -19,14 +20,16 @@ namespace TemperaturePrediction.UI.Service
             _api = _api ?? new Api(API_KEY);
         }
 
-        public async Task GetPastWeatherForLocationAsync(string location, DateTime startDate)
+        public async Task<Meteo> GetPastWeatherForLocationAsync(string location, DateTime startDate)
         {
             var res = await _api.BuildPastWeatherQuery(location, startDate)
                 .WithEnddate(startDate)
                 .WithIncludeLocation(true)
                 .GetResult();
 
-            var temp = res.data.weather;
+            var weather = res.data.weather[0];
+
+            return new Meteo(weather.mintempC, weather.maxtempC);
         }
     }
 }

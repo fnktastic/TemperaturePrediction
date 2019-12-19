@@ -80,6 +80,7 @@ namespace TemperaturePrediction.UI.Service
         {
             var scene = new Scene();
 
+            scene.Id = GetMetadataStringValue(scenePath, "LANDSAT_SCENE_ID"); 
             scene.Name = GetMetadataStringValue(scenePath, "LANDSAT_PRODUCT_ID");
             scene.Path = scenePath;
             scene.Cloudity = GetMetadataStringValue(scenePath, "CLOUD_COVER");
@@ -89,7 +90,7 @@ namespace TemperaturePrediction.UI.Service
             for (int i = 0; i < _points.Count; i++)
             {
                 var point = _points[i];
-                var area = BuildArea(scenePath, i, point.X, point.Y, point.OFFSET);
+                var area = BuildArea(scenePath, i+1, point.X, point.Y, point.OFFSET);
 
                 scene.Areas.Add(area);
             }
@@ -126,6 +127,8 @@ namespace TemperaturePrediction.UI.Service
 
         private Area BuildArea(string scene, int areaNumber, int X1, int Y1, int OFFSET)
         {
+            LatLon lonLat = new LatLon();
+
             var mapPoints = new List<MapPoint>();
             var unitPoints = new List<UnitPoint>();
 
@@ -141,9 +144,9 @@ namespace TemperaturePrediction.UI.Service
 
             if (band10 != null && band4 != null && band5 != null)
             {
-                double ul_lat = GetMetadataValue(scene, MetadataTags.CORNER_UL_LAT_PRODUCT);
+                int utm_zone = int.Parse(GetMetadataValue(scene, MetadataTags.UTM_ZONE).ToString());
 
-                double ul_lon = GetMetadataValue(scene, MetadataTags.CORNER_UL_LON_PRODUCT);
+                lonLat = GeoTIFF.LonLat(band10, utm_zone, X1, Y1, OFFSET);
 
                 Band10Tiff = new GeoTIFF(band10, X1, Y1, OFFSET);
 
@@ -218,7 +221,7 @@ namespace TemperaturePrediction.UI.Service
                                     Y = Y1 + j,
                                     Ndvi = Ndvi[i, j],
                                     PictureTemperature = LST[i, j],
-                                    StationTemperature = null
+                                    StationTemperature = null,
                                 });
 
                                 mapPoints.Add(new MapPoint()
@@ -241,7 +244,8 @@ namespace TemperaturePrediction.UI.Service
             {
                 MapPoints = mapPoints,
                 UnitPoints = unitPoints,
-                Number = areaNumber
+                Number = areaNumber,
+                LonLat = lonLat
             };
         }
     }

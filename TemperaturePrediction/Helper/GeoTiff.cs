@@ -1,10 +1,12 @@
 ﻿using BitMiracle.LibTiff.Classic;
+using CoordinateSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TemperaturePrediction.Model;
 
 namespace TemperaturePrediction.Data.Helper
 {
@@ -13,6 +15,46 @@ namespace TemperaturePrediction.Data.Helper
         public float[,] HeightMap { get; private set; }
         public int NWidth { get; private set; }
         public int NHeight { get; private set; }
+
+        private static LatLon GetLatLon(double x, double y, int zone)
+        {
+            UniversalTransverseMercator utm = new UniversalTransverseMercator("Q", zone, x, y);
+            Coordinate c = UniversalTransverseMercator.ConvertUTMtoLatLong(utm);
+
+            return new LatLon(c.Latitude.DecimalDegree, c.Longitude.DecimalDegree);
+        }
+
+        public static LatLon LonLat(string fn, int zone, int X1, int Y1, int OFFSET)
+        {
+            using (Tiff tiff = Tiff.Open(fn, "r"))
+            {
+                int height = tiff.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
+                FieldValue[] modelPixelScaleTag = tiff.GetField(TiffTag.GEOTIFF_MODELPIXELSCALETAG);
+                FieldValue[] modelTiepointTag = tiff.GetField(TiffTag.GEOTIFF_MODELTIEPOINTTAG);
+
+                byte[] modelPixelScale = modelPixelScaleTag[1].GetBytes();
+                double pixelSizeX = BitConverter.ToDouble(modelPixelScale, 0);
+                double pixelSizeY = BitConverter.ToDouble(modelPixelScale, 8) * -1;
+
+                byte[] modelTransformation = modelTiepointTag[1].GetBytes();
+                double originLon = BitConverter.ToDouble(modelTransformation, 24);
+                double originLat = BitConverter.ToDouble(modelTransformation, 32);
+
+                double startLon = originLon + (pixelSizeX / 2.0);
+                double startLat = originLat + (pixelSizeY / 2.0);
+
+                var scanline16Bit = new ushort[OFFSET];
+
+                double currentLat = startLat;
+                double currentLon = startLon;
+
+                var latitude = currentLat + (pixelSizeY * ((X1 + OFFSET) / 2));
+
+                var longitude = currentLon + (pixelSizeX * scanline16Bit.Length / 2);
+
+                return GetLatLon(longitude, latitude, zone);
+            }
+        }
 
         public GeoTIFF(string fn, int X1 = 5000, int Y1 = 5000, int OFFSET = 100)
         {
@@ -32,7 +74,7 @@ namespace TemperaturePrediction.Data.Helper
 
                 double startLon = originLon + (pixelSizeX / 2.0);
                 double startLat = originLat + (pixelSizeY / 2.0);
-                
+
                 var scanline = new byte[tiff.ScanlineSize()];
 
                 //TODO: Check if band is stored in 1 byte or 2 bytes. 

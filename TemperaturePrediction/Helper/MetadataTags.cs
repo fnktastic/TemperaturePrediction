@@ -10,5 +10,7 @@
 
         public static string CORNER_UL_LAT_PRODUCT = "CORNER_UL_LAT_PRODUCT";
         public static string CORNER_UL_LON_PRODUCT = "CORNER_UL_LON_PRODUCT";
+
+        public static string UTM_ZONE = "UTM_ZONE";
     }
 }
