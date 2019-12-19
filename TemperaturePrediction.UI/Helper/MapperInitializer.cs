@@ -30,6 +30,7 @@ namespace TemperaturePrediction.UI.Helper
             cfg.CreateMap<PointDto, Point>();
             cfg.CreateMap<SceneDto, Scene>();
             cfg.CreateMap<UnitPointDto, UnitPoint>();
+            cfg.CreateMap<TimeLinePointDto, TimeLinePoint>();
 
             cfg.CreateMap<Scene, SceneDto>();
             cfg.CreateMap<Area, AreaDto>();
@@ -40,6 +41,7 @@ namespace TemperaturePrediction.UI.Helper
             cfg.CreateMap<Point, PointDto>();
             cfg.CreateMap<Scene, SceneDto>();
             cfg.CreateMap<UnitPoint, UnitPointDto>();
+            cfg.CreateMap<TimeLinePoint, TimeLinePointDto>();
         })
         {
 

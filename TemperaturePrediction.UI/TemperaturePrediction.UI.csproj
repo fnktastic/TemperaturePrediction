@@ -119,6 +119,7 @@
     <Compile Include="Model\Meteo.cs" />
     <Compile Include="Model\Point.cs" />
     <Compile Include="Model\Scene.cs" />
+    <Compile Include="Model\TimeLinePoint.cs" />
     <Compile Include="Model\UnitPoint.cs" />
     <Compile Include="Service\DataService.cs" />
     <Compile Include="Service\DbService.cs" />

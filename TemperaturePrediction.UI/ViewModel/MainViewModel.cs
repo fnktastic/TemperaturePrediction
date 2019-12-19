@@ -233,7 +233,8 @@ namespace TemperaturePrediction.UI.ViewModel
                     {
                         Area = anyScene.Areas[i].Number,
                         DateTime = _startDate,
-                        LonLatn = anyScene.Areas[i].LonLat,
+                        Lon = anyScene.Areas[i].LonLat.Lon,
+                        Lat = anyScene.Areas[i].LonLat.Lat,
                         Meteo = (await _weatherService.GetPastWeatherForLocationAsync(anyScene.Areas[i].LonLat.ToString(), _startDate)).AVG,
                         Map = 0
                     };
@@ -251,8 +252,9 @@ namespace TemperaturePrediction.UI.ViewModel
                     var timeLinePoint = new TimeLinePoint()
                     {
                         Area = scene.Areas[i].Number,
-                        DateTime = _startDate,
-                        LonLatn = new LatLon(scene.Areas[i].LonLat.Lat, scene.Areas[i].LonLat.Lon),
+                        DateTime = scene.TimeStamp,
+                        Lat = scene.Areas[i].LonLat.Lat,
+                        Lon = scene.Areas[i].LonLat.Lon,
                         Meteo = 0,
                         Map = scene.Areas[i].UnitPoints.Select(x => x.PictureTemperature).Average()
                     };

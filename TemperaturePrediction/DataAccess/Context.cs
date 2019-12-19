@@ -15,6 +15,8 @@ namespace TemperaturePrediction.DataAccess
 
         }
 
+        public DbSet<TimeLinePointDto> Points { get; set; }
+
         public DbSet<SceneDto> Scenes { get; set; }
     }
 

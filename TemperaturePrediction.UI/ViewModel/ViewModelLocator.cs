@@ -30,6 +30,8 @@ namespace TemperaturePrediction.UI.ViewModel
             SimpleIoc.Default.Register<ISceneRepository, SceneRepository>();
 
             SimpleIoc.Default.Register<IDbService, DbService>();
+
+            SimpleIoc.Default.Register<ITimelineRepository, TimelineRepository>();
         }
 
         public MainViewModel Main

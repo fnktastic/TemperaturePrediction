@@ -71,9 +71,11 @@
     <Compile Include="Model\MeteoDto.cs" />
     <Compile Include="Model\PointDto.cs" />
     <Compile Include="Model\SceneDto.cs" />
+    <Compile Include="Model\TimeLinePointDto.cs" />
     <Compile Include="Model\UnitPointDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SceneRepository.cs" />
+    <Compile Include="Repository\TimelineRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
