@@ -6,12 +6,26 @@
         xmlns:local="clr-namespace:TemperaturePrediction.UI"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:views="clr-namespace:TemperaturePrediction.UI.View"
+        xmlns:converter="clr-namespace:TrendAudioFromSpotify.UI.Converter"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" Height="600" Width="800">
+    <Controls:MetroWindow.Resources>
+        <converter:BoolToVisibleOrCollapsed x:Key="BoolToVisibleOrCollapsed" />
+        <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+    </Controls:MetroWindow.Resources>
     <TabControl>
         <TabItem Header="Data Preparing">
             <views:FetchMapUserControl Padding="10" />
+        </TabItem>
+        <TabItem Header="Data Viewer">
+            <views:DataViewerControl />
+        </TabItem>
+        <TabItem Header="Analyzing">
+            <views:DataViewerControl />
+        </TabItem>
+        <TabItem Header="Prediction">
+            <views:DataViewerControl />
         </TabItem>
     </TabControl>
 </Controls:MetroWindow>
