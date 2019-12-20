@@ -193,9 +193,9 @@ namespace TemperaturePrediction.UI.ViewModel
 
             points = new List<Point>()
             {
-                new Point(3500, 3500, 2),
-                new Point(3750, 3750, 2),
-                new Point(5000, 5000, 2),
+                new Point(3500, 3500, 20),
+                new Point(3750, 3750, 20),
+                new Point(5000, 5000, 20),
             };
 
             var scenes = await _dataService.GetScenesAsync(scenesPath, points);
@@ -212,6 +212,7 @@ namespace TemperaturePrediction.UI.ViewModel
             }
 
             FillTimeLine();
+
             //await _dbService.InsertSceneRangeAsync(Scenes.ToList());
         }
 
@@ -261,6 +262,11 @@ namespace TemperaturePrediction.UI.ViewModel
 
                     TimeLines[timeLinePoint.Area].Add(timeLinePoint);
                 }
+            }
+
+            foreach (var timeLine in TimeLines)
+            {
+                await _dbService.InsertTimeLinePoints(timeLine.Value.ToList());
             }
         }
         #endregion

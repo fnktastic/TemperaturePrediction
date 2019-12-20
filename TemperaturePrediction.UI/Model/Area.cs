@@ -9,5 +9,6 @@ namespace TemperaturePrediction.UI.Model
         public List<UnitPoint> UnitPoints { get; set; }
         public LatLon LonLat { get; set; }
         public Meteo Meteo { get; set; }
+        public float R { get; set; }
     }
 }

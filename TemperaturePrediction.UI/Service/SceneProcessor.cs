@@ -55,6 +55,7 @@ namespace TemperaturePrediction.UI.Service
             scene.Metadata = Directory.GetFiles(scenePath).FirstOrDefault(x => Path.GetFileNameWithoutExtension(x).EndsWith("MTL"));
             scene.Cloudity = GetMetadataStringValue(scenePath, "CLOUD_COVER");
             scene.TimeStamp = DateTime.Parse(GetMetadataStringValue(scenePath, "DATE_ACQUIRED"));
+            //scene.Time = TimeSpan.Parse(GetMetadataStringValue(scenePath, "SCENE_CENTER_TIME"));
             scene.Image = Path.Combine(scenePath, "preview.jpg");
 
             for (int i = 0; i < _points.Count; i++)

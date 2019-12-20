@@ -8,6 +8,8 @@ namespace TemperaturePrediction.Model
         public float Min { get; set; }
         public float Max { get; set; }
 
+        public float Now { get; set; }
+
         public MeteoDto(float min, float max)
         {
             Min = min;

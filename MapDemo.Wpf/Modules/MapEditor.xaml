@@ -82,15 +82,12 @@
             </dxm:VectorLayer>
 
             <dxm:MapControl.Legends>
-                <dxm:ColorListLegend Header="Resort Map">
+                <dxm:ColorListLegend Header="South Dakota">
                     <dxm:ColorListLegend.CustomItems>
-                        <dxm:ColorLegendItem Text="Roads/Parking" Color="Gray" />
-                        <dxm:ColorLegendItem Text="Services" Color="#C00000"/>
-                        <dxm:ColorLegendItem Text="Botanic Gardens" Color="#00B050"/>
-                        <dxm:ColorLegendItem Text="Pools and Fountains" Color="#00B0F0"/>
-                        <dxm:ColorLegendItem Text="Recreation/Play Areas" Color="#FFCB2F"/>
-                        <dxm:ColorLegendItem Text="Residential Buildings" Color="#C45C07"/>
-                        <dxm:ColorLegendItem Text="Reception/Restaurant" Color="#AA00FF"/>
+                        <dxm:ColorLegendItem Text="Meteo 1" Color="Green" />
+                        <dxm:ColorLegendItem Text="Meteo 2" Color="Green" />
+                        <dxm:ColorLegendItem Text="Meteo 3" Color="Green" />
+                        <dxm:ColorLegendItem Text="Target Point" Color="Red" />
                     </dxm:ColorListLegend.CustomItems>
                 </dxm:ColorListLegend>
 

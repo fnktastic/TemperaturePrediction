@@ -16,6 +16,7 @@ namespace TemperaturePrediction.Model
         public string Path { get; set; }
         public string Metadata { get; set; }
         public DateTime TimeStamp { get; set; }
+        public TimeSpan Time { get; set; }
 
         public SceneDto()
         {

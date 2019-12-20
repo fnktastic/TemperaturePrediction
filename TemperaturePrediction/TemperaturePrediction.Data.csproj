@@ -70,6 +70,7 @@
     <Compile Include="Model\MapPointDto.cs" />
     <Compile Include="Model\MeteoDto.cs" />
     <Compile Include="Model\PointDto.cs" />
+    <Compile Include="Model\PredictedPointDto.cs" />
     <Compile Include="Model\SceneDto.cs" />
     <Compile Include="Model\TimeLinePointDto.cs" />
     <Compile Include="Model\UnitPointDto.cs" />

@@ -11,5 +11,6 @@ namespace TemperaturePrediction.Model
         public List<UnitPointDto> UnitPoints { get; set; }
         public LatLonDto LonLat { get; set; }
         public MeteoDto Meteo { get; set; }
+        public float R { get; set; } = 10;
     }
 }
