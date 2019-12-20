@@ -20,7 +20,7 @@ namespace TemperaturePrediction.UI.Model
 
         public DateTime TimeStamp { get; set; }
 
-        public DateTime Time { get; set; }
+        public TimeSpan Time { get; set; }
 
         public string Metadata { get; set; }
 

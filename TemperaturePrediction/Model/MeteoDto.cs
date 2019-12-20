@@ -10,12 +10,11 @@ namespace TemperaturePrediction.Model
 
         public float Now { get; set; }
 
-        public MeteoDto(float min, float max)
+        public MeteoDto(float min, float max, int now)
         {
             Min = min;
             Max = max;
+            Now = now;
         }
-
-        public virtual double AVG => (Min + Max) / 2;
     }
 }

@@ -2,11 +2,16 @@ using AutoMapper;
 using CoordinateSharp;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using LiveCharts;
+using LiveCharts.Configurations;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using TemperaturePrediction.Model;
 using TemperaturePrediction.UI.Collection;
 using TemperaturePrediction.UI.Model;
@@ -220,11 +225,11 @@ namespace TemperaturePrediction.UI.ViewModel
         {
             var anyScene = _scenes.FirstOrDefault();
 
-            for(int i = 0; i < anyScene.Areas.Count; i++)
+            for (int i = 0; i < anyScene.Areas.Count; i++)
             {
-                TimeLines.Add(i+1, new TimeLinePointCollection());
+                TimeLines.Add(i + 1, new TimeLinePointCollection());
             }
-            
+
 
             while (_startDate < _endDate)
             {
@@ -236,7 +241,7 @@ namespace TemperaturePrediction.UI.ViewModel
                         DateTime = _startDate,
                         Lon = anyScene.Areas[i].LonLat.Lon,
                         Lat = anyScene.Areas[i].LonLat.Lat,
-                        Meteo = (await _weatherService.GetPastWeatherForLocationAsync(anyScene.Areas[i].LonLat.ToString(), _startDate)).AVG,
+                        Meteo = (await _weatherService.GetPastWeatherForLocationAsync(anyScene.Areas[i].LonLat.ToString(), _startDate)).Now,
                         Map = 0
                     };
 
@@ -279,6 +284,95 @@ namespace TemperaturePrediction.UI.ViewModel
             IsDataFetching = true;
             await FetchScenes();
             IsDataFetching = false;
+        }
+
+
+
+        public class DateModel
+        {
+            public System.DateTime DateTime { get; set; }
+            public double Value { get; set; }
+        }
+
+        private Func<double, string> _formatter;
+        public Func<double, string> Formatter
+        {
+            get { return _formatter; }
+            set
+            {
+                _formatter = value;
+                RaisePropertyChanged(nameof(Formatter));
+            }
+        }
+
+        private SeriesCollection _series;
+        public SeriesCollection Series
+        {
+            get { return _series; }
+            set
+            {
+                _series = value;
+                RaisePropertyChanged(nameof(Series));
+            }
+        }
+
+        private RelayCommand _showTimeSeriesCommand;
+        public RelayCommand ShowTimeSeriesCommand => _showTimeSeriesCommand ?? (_showTimeSeriesCommand = new RelayCommand(ShowTimeSeries));
+        private void ShowTimeSeries()
+        {
+            var dayConfig = Mappers.Xy<DateModel>()
+                .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromDays(_interval).Ticks)
+                .Y(dayModel => dayModel.Value);
+
+            Series = new SeriesCollection(dayConfig)
+            {
+                new LineSeries
+                {
+                    PointGeometry = DefaultGeometries.Square,
+                    Values = new ChartValues<DateModel>
+                    {
+                         new DateModel
+                        {
+                            DateTime = System.DateTime.Now.AddDays(1),
+                            Value = 2
+                        },
+                        new DateModel
+                        {
+                            DateTime = System.DateTime.Now.AddDays(2),
+                            Value = 5
+                        },
+                        new DateModel
+                        {
+                            DateTime = System.DateTime.Now.AddDays(6),
+                            Value = 9
+                        }
+                    },
+                    Fill = Brushes.Transparent
+                },
+                new ColumnSeries
+                {
+                    Values = new ChartValues<DateModel>
+                    {
+                        new DateModel
+                        {
+                            DateTime = System.DateTime.Now,
+                            Value = 4
+                        },
+                        new DateModel
+                        {
+                            DateTime = System.DateTime.Now.AddDays(1),
+                            Value = 6
+                        },
+                        new DateModel
+                        {
+                            DateTime = System.DateTime.Now.AddDays(2),
+                            Value = 8
+                        }
+                    }
+                }
+            };
+
+            Formatter = value => new System.DateTime((long)(value * TimeSpan.FromDays(_interval).Ticks)).ToString();
         }
         #endregion
     }

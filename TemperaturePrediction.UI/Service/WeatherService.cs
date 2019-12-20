@@ -27,9 +27,9 @@ namespace TemperaturePrediction.UI.Service
                 .WithIncludeLocation(true)
                 .GetResult();
 
-            var weather = res.data.weather[0];
+            var weather = res.data.weather[0];;
 
-            return new MeteoDto(weather.mintempC, weather.maxtempC);
+            return new MeteoDto(weather.mintempC, weather.maxtempC, weather.hourly[5].tempC);
         }
     }
 }
