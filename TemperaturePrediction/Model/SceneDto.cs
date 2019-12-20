@@ -15,8 +15,15 @@ namespace TemperaturePrediction.Model
         public string Cloudity { get; set; }
         public string Path { get; set; }
         public string Metadata { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public TimeSpan Time { get; set; }
+        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
+
+        public long TimeTicks { get; set; }
+        [NotMapped]
+        public TimeSpan Time
+        {
+            get { return TimeSpan.FromTicks(TimeTicks); }
+            set { TimeTicks = value.Ticks; }
+        }
 
         public SceneDto()
         {

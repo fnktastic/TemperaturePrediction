@@ -18,9 +18,9 @@ namespace TemperaturePrediction.UI.Model
 
         public string Cloudity { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; } 
 
-        public TimeSpan Time { get; set; }
+        public TimeSpan? Time { get; set; }
 
         public string Metadata { get; set; }
 

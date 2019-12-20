@@ -62,6 +62,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.4.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -139,6 +142,9 @@
     <Compile Include="View\FetchMapUserControl.xaml.cs">
       <DependentUpon>FetchMapUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PredictedAreaControl.xaml.cs">
+      <DependentUpon>PredictedAreaControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="Control\SceneControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\FetchMapUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PredictedAreaControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -205,7 +215,7 @@
       <Name>WorldWeatherOnline</Name>
     </ProjectReference>
     <ProjectReference Include="..\TemperaturePrediction\TemperaturePrediction.Data.csproj">
-      <Project>{6A137BCF-A4C0-461D-80DB-03DD8C6BD75F}</Project>
+      <Project>{6a137bcf-a4c0-461d-80db-03dd8c6bd75f}</Project>
       <Name>TemperaturePrediction.Data</Name>
     </ProjectReference>
   </ItemGroup>

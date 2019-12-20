@@ -25,7 +25,7 @@
             <views:AnalyzingSceneControl />
         </TabItem>
         <TabItem Header="Prediction">
-            <views:DataViewerControl />
+            <views:PredictedAreaControl />
         </TabItem>
     </TabControl>
 </Controls:MetroWindow>

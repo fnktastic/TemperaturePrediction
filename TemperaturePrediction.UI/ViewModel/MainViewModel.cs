@@ -12,7 +12,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using TemperaturePrediction.Model;
 using TemperaturePrediction.UI.Collection;
 using TemperaturePrediction.UI.Model;
 using TemperaturePrediction.UI.Service;
@@ -216,7 +215,7 @@ namespace TemperaturePrediction.UI.ViewModel
                 Scenes.Add(mappedScene);
             }
 
-            FillTimeLine();
+            //FillTimeLine();
 
             //await _dbService.InsertSceneRangeAsync(Scenes.ToList());
         }
@@ -231,6 +230,7 @@ namespace TemperaturePrediction.UI.ViewModel
             }
 
 
+            var rnd = new Random();
             while (_startDate < _endDate)
             {
                 for (int i = 0; i < anyScene.Areas.Count; i++)
@@ -255,17 +255,24 @@ namespace TemperaturePrediction.UI.ViewModel
             {
                 for (int i = 0; i < scene.Areas.Count; i++)
                 {
-                    var timeLinePoint = new TimeLinePoint()
+                    try
                     {
-                        Area = scene.Areas[i].Number,
-                        DateTime = scene.TimeStamp,
-                        Lat = scene.Areas[i].LonLat.Lat,
-                        Lon = scene.Areas[i].LonLat.Lon,
-                        Meteo = 0,
-                        Map = scene.Areas[i].UnitPoints.Select(x => x.PictureTemperature).Average()
-                    };
+                        var timeLinePoint = new TimeLinePoint()
+                        {
+                            Area = scene.Areas[i].Number,
+                            DateTime = scene.TimeStamp,
+                            Lat = scene.Areas[i].LonLat.Lat,
+                            Lon = scene.Areas[i].LonLat.Lon,
+                            Meteo = 0,
+                            Map = scene.Areas[i].UnitPoints.Select(x => x.PictureTemperature).Average()
+                        };
 
-                    TimeLines[timeLinePoint.Area].Add(timeLinePoint);
+                        TimeLines[timeLinePoint.Area].Add(timeLinePoint);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
                 }
             }
 
@@ -277,6 +284,43 @@ namespace TemperaturePrediction.UI.ViewModel
         #endregion
 
         #region commands
+
+        private RelayCommand _trainModelCommand;
+        public RelayCommand TrainModelCommand => _trainModelCommand ?? (_trainModelCommand = new RelayCommand(TrainModel));
+        private async void TrainModel()
+        {
+            var mapPoints = await _dbService.GetTimeLinePoints();
+
+            //ch 1 meteo
+            var predicted = mapPoints.GroupBy(x => x.DateTime).OrderBy(x => x.Key).Select(y => { 
+            {
+                    var val = y.Average(z => z.Map);
+                    var val2 = y.Average(t => t.Meteo);
+                    return new DateModel()
+                    {
+                        DateTime = y.Key,
+                        Value = ((val + val2) / 2)
+                    };
+            }
+            }).OrderBy(x => x.DateTime);
+
+            var dayConfig = Mappers.Xy<DateModel>()
+                .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromDays(_interval).Ticks)
+                .Y(dayModel => dayModel.Value);
+
+            Predicted = new SeriesCollection(dayConfig)
+            {
+                new LineSeries
+                {
+                    Title = "Predicted, C",
+                    PointGeometry = DefaultGeometries.Square,
+                    Values = new ChartValues<DateModel>(predicted),
+                    Fill = Brushes.Transparent
+                }
+            };
+        }
+
+
         private RelayCommand _fetchDataCommand;
         public RelayCommand FetchDataCommand => _fetchDataCommand ?? (_fetchDataCommand = new RelayCommand(FetchData));
         private async void FetchData()
@@ -316,10 +360,84 @@ namespace TemperaturePrediction.UI.ViewModel
             }
         }
 
+        private SeriesCollection _series2;
+        public SeriesCollection Series2
+        {
+            get { return _series2; }
+            set
+            {
+                _series2 = value;
+                RaisePropertyChanged(nameof(Series2));
+            }
+        }
+
+        private SeriesCollection _series3;
+        public SeriesCollection Series3
+        {
+            get { return _series3; }
+            set
+            {
+                _series3 = value;
+                RaisePropertyChanged(nameof(Series3));
+            }
+        }
+        private SeriesCollection _predicted;
+        public SeriesCollection Predicted
+        {
+            get { return _predicted; }
+            set
+            {
+                _predicted = value;
+                RaisePropertyChanged(nameof(Predicted));
+            }
+        }
+
         private RelayCommand _showTimeSeriesCommand;
         public RelayCommand ShowTimeSeriesCommand => _showTimeSeriesCommand ?? (_showTimeSeriesCommand = new RelayCommand(ShowTimeSeries));
-        private void ShowTimeSeries()
+        private async void ShowTimeSeries()
         {
+            var mapPoints = await _dbService.GetTimeLinePoints();
+
+            //ch 1 meteo
+            var chanel1Meteo = mapPoints.Where(x => x.Area == 1 && x.Map == 0).Select(x => new DateModel()
+            {
+                DateTime = x.DateTime,
+                Value = x.Meteo
+            }).OrderBy(x => x.DateTime);
+            //ch 1 map
+            var chanel1Map = mapPoints.Where(x => x.Area == 1 && x.Meteo == 0).Select(x => new DateModel()
+            {
+                DateTime = x.DateTime,
+                Value = x.Map
+            }).OrderBy(x => x.DateTime);
+
+
+            //ch 2 meteo
+            var chanel2Meteo = mapPoints.Where(x => x.Area == 2 && x.Map == 0).Select(x => new DateModel()
+            {
+                DateTime = x.DateTime,
+                Value = x.Meteo
+            }).OrderBy(x => x.DateTime);
+            //ch 2 map
+            var chanel2Map = mapPoints.Where(x => x.Area == 2 && x.Meteo == 0).Select(x => new DateModel()
+            {
+                DateTime = x.DateTime,
+                Value = x.Map
+            }).OrderBy(x => x.DateTime);
+
+            //ch 3 meteo
+            var chanel3Meteo = mapPoints.Where(x => x.Area == 3 && x.Map == 0).Select(x => new DateModel()
+            {
+                DateTime = x.DateTime,
+                Value = x.Meteo
+            }).OrderBy(x => x.DateTime);
+            //ch 3 map
+            var chanel3Map = mapPoints.Where(x => x.Area == 3 && x.Meteo == 0).Select(x => new DateModel()
+            {
+                DateTime = x.DateTime,
+                Value = x.Map
+            }).OrderBy(x => x.DateTime);
+
             var dayConfig = Mappers.Xy<DateModel>()
                 .X(dayModel => (double)dayModel.DateTime.Ticks / TimeSpan.FromDays(_interval).Ticks)
                 .Y(dayModel => dayModel.Value);
@@ -328,50 +446,50 @@ namespace TemperaturePrediction.UI.ViewModel
             {
                 new LineSeries
                 {
+                    Title = "Meteostation, C",
                     PointGeometry = DefaultGeometries.Square,
-                    Values = new ChartValues<DateModel>
-                    {
-                         new DateModel
-                        {
-                            DateTime = System.DateTime.Now.AddDays(1),
-                            Value = 2
-                        },
-                        new DateModel
-                        {
-                            DateTime = System.DateTime.Now.AddDays(2),
-                            Value = 5
-                        },
-                        new DateModel
-                        {
-                            DateTime = System.DateTime.Now.AddDays(6),
-                            Value = 9
-                        }
-                    },
+                    Values = new ChartValues<DateModel>(chanel1Meteo),
                     Fill = Brushes.Transparent
                 },
-                new ColumnSeries
+                new LineSeries
                 {
-                    Values = new ChartValues<DateModel>
-                    {
-                        new DateModel
-                        {
-                            DateTime = System.DateTime.Now,
-                            Value = 4
-                        },
-                        new DateModel
-                        {
-                            DateTime = System.DateTime.Now.AddDays(1),
-                            Value = 6
-                        },
-                        new DateModel
-                        {
-                            DateTime = System.DateTime.Now.AddDays(2),
-                            Value = 8
-                        }
-                    }
+                    Title = "Calculated, C",
+                    PointGeometry = DefaultGeometries.Cross,
+                    Values = new ChartValues<DateModel>(chanel1Map),
                 }
             };
-
+            Series2 = new SeriesCollection(dayConfig)
+            {
+                new LineSeries
+                {
+                    Title = "Meteostation, C",
+                    PointGeometry = DefaultGeometries.Square,
+                    Values = new ChartValues<DateModel>(chanel2Meteo),
+                    Fill = Brushes.Transparent
+                },
+                new LineSeries
+                {
+                    Title = "Calculated, C",
+                    PointGeometry = DefaultGeometries.Cross,
+                    Values = new ChartValues<DateModel>(chanel2Map),
+                }
+            };
+            Series3 = new SeriesCollection(dayConfig)
+            {
+                new LineSeries
+                {
+                    Title = "Meteostation, C",
+                    PointGeometry = DefaultGeometries.Square,
+                    Values = new ChartValues<DateModel>(chanel3Meteo),
+                    Fill = Brushes.Transparent
+                },
+                new LineSeries
+                {
+                    Title = "Calculated, C",
+                    PointGeometry = DefaultGeometries.Cross,
+                    Values = new ChartValues<DateModel>(chanel3Map),
+                }
+            };
             Formatter = value => new System.DateTime((long)(value * TimeSpan.FromDays(_interval).Ticks)).ToString();
         }
         #endregion
